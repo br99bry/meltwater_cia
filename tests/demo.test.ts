@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { getGreeting } from "../src/index.js";
+import { runPartOneDemo } from "../src/index.js";
 
 describe("demo", () => {
-  it("returns the initial greeting", () => {
-    expect(getGreeting()).toBe("Hello from the Meltwater CIA redaction demo.");
+  it("prints a runnable part 1 redaction example", () => {
+    expect(runPartOneDemo()).toContain(
+      "Redacted: XXXX analyst. The XXXX report mentioned XXXX, XXXX, and XXXX.",
+    );
   });
 });

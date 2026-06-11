@@ -1,3 +1,3 @@
-import { getGreeting } from "../index.js";
+import { runPartOneDemo } from "../index.js";
 
-console.log(getGreeting());
+console.log(runPartOneDemo());

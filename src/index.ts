@@ -1,5 +1,3 @@
 export { KeywordParseError, parseKeywords } from "./services/keyword-parser.js";
-
-export function getGreeting(): string {
-  return "Hello from the Meltwater CIA redaction demo.";
-}
+export { runPartOneDemo } from "./services/part-one-demo.js";
+export { redactDocument } from "./services/redactor.js";
