@@ -1,0 +1,35 @@
+{
+  "name": "meltwater-cia-redaction",
+  "version": "1.0.0",
+  "description": "Technical exercise for redacting and unredacting classified documents.",
+  "type": "module",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "demo": "npm run build && node dist/cli/demo.js",
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run test && npm run build"
+  },
+  "keywords": [
+    "redaction",
+    "typescript",
+    "technical-assessment"
+  ],
+  "author": "Bryan Aranda",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.9.3",
+    "eslint": "^10.4.1",
+    "prettier": "^3.8.4",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^4.1.8"
+  }
+}
