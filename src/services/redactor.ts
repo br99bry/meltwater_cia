@@ -5,30 +5,46 @@ type RedactionRange = {
   end: number;
 };
 
-export function redactDocument(documentText: string, keywords: string[]): string {
-  const ranges = findRedactionRanges(documentText, keywords);
+type RedactionMatch = RedactionRange & {
+  text: string;
+};
 
-  if (ranges.length === 0) {
+export function redactDocument(documentText: string, keywords: string[]): string {
+  const matches = findRedactionMatches(documentText, keywords);
+
+  return applyRedactions(documentText, matches, () => REDACTION_TOKEN);
+}
+
+function findRedactionMatches(documentText: string, keywords: string[]): RedactionMatch[] {
+  const uniqueKeywords = [...new Set(keywords.filter((keyword) => keyword.length > 0))];
+  const matches = uniqueKeywords.flatMap((keyword) => findKeywordRanges(documentText, keyword));
+  const ranges = selectNonOverlappingRanges(matches);
+
+  return ranges.map((range) => ({
+    ...range,
+    text: documentText.slice(range.start, range.end),
+  }));
+}
+
+function applyRedactions(
+  documentText: string,
+  matches: RedactionMatch[],
+  createReplacement: (match: RedactionMatch) => string,
+): string {
+  if (matches.length === 0) {
     return documentText;
   }
 
   let redactedText = "";
   let cursor = 0;
 
-  for (const range of ranges) {
-    redactedText += documentText.slice(cursor, range.start);
-    redactedText += REDACTION_TOKEN;
-    cursor = range.end;
+  for (const match of matches) {
+    redactedText += documentText.slice(cursor, match.start);
+    redactedText += createReplacement(match);
+    cursor = match.end;
   }
 
   return redactedText + documentText.slice(cursor);
-}
-
-function findRedactionRanges(documentText: string, keywords: string[]): RedactionRange[] {
-  const uniqueKeywords = [...new Set(keywords.filter((keyword) => keyword.length > 0))];
-  const matches = uniqueKeywords.flatMap((keyword) => findKeywordRanges(documentText, keyword));
-
-  return selectNonOverlappingRanges(matches);
 }
 
 function findKeywordRanges(documentText: string, keyword: string): RedactionRange[] {
