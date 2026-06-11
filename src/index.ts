@@ -1,3 +1,8 @@
 export { KeywordParseError, parseKeywords } from "./services/keyword-parser.js";
-export { runPartOneDemo } from "./services/part-one-demo.js";
-export { redactDocument } from "./services/redactor.js";
+export { runDemo } from "./services/demo-runner.js";
+export {
+  redactDocument,
+  redactDocumentWithKey,
+  unredactDocument,
+  UnredactionError,
+} from "./domain/redactor.js";

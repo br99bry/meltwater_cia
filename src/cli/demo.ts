@@ -1,3 +1,3 @@
-import { runPartOneDemo } from "../index.js";
+import { runDemo } from "../index.js";
 
-console.log(runPartOneDemo());
+console.log(runDemo());

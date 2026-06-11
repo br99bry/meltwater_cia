@@ -25,16 +25,15 @@ npm run check
 npm run demo
 ```
 
-Runs a small Part 1 example that parses keywords and redacts matching document text with `XXXX`.
+Runs a small Part 1 and Part 2 example that parses keywords, redacts matching document text, then restores reversible redactions with a key.
 
 ## Project Structure
 
 ```text
 src/
-  cli/
-  domain/
-  services/
-  types/
+  cli/       runnable demo entrypoint
+  domain/    redaction and unredaction rules
+  services/  keyword parsing and demo orchestration
 tests/
 ```
 
@@ -52,3 +51,22 @@ The assessment asks for a program that can be demoed, so the initial delivery fo
 - Keywords and phrases are matched literally, not as regular expressions.
 - Redacted text is replaced with the fixed token `XXXX`; the replacement does not preserve the original text length.
 - When matches overlap, the longest match wins. This keeps phrases like `Pepperoni Pizza` from being partially redacted as `pizza`.
+
+## Reversible Redaction
+
+Part 2 keeps the Part 1 behavior intact and adds separate reversible functions. This avoids changing the meaning of the plain `XXXX` redaction output.
+
+Reversible redactions are embedded in the document as versioned tokens:
+
+```text
+XXXX[cia:v1:<payload>]
+```
+
+The payload contains the original text encrypted with Node's built-in AES-256-GCM support. The exercise does not require production-grade cryptography, but authenticated encryption avoids exposing the removed text as plain Base64 and lets the program reject tokens that were created with a different key or were modified.
+
+Additional assumptions:
+
+- Unredaction receives only a key and the redacted document, so reversible metadata is stored in-band instead of in an external database.
+- Reversible redaction requires a non-empty key.
+- Plain `XXXX` tokens from Part 1 are left unchanged by unredaction.
+- Incorrect keys or malformed reversible tokens fail with `UnredactionError`.
