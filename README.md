@@ -25,7 +25,7 @@ npm run check
 npm run demo
 ```
 
-Prints a minimal hello-world message. The redaction and unredaction implementation will be added incrementally.
+Runs a small Part 1 example that parses keywords and redacts matching document text with `XXXX`.
 
 ## Project Structure
 
@@ -48,3 +48,7 @@ The assessment asks for a program that can be demoed, so the initial delivery fo
 - Quoted phrases are treated as a single keyword.
 - Straight and curly quotes are accepted as phrase delimiters.
 - Malformed quoted input fails fast instead of being parsed ambiguously.
+- Redaction matching is case-sensitive because the exercise does not define case folding rules.
+- Keywords and phrases are matched literally, not as regular expressions.
+- Redacted text is replaced with the fixed token `XXXX`; the replacement does not preserve the original text length.
+- When matches overlap, the longest match wins. This keeps phrases like `Pepperoni Pizza` from being partially redacted as `pizza`.
