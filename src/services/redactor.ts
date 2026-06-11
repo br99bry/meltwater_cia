@@ -52,14 +52,29 @@ function findKeywordRanges(documentText: string, keyword: string): RedactionRang
 
 function selectNonOverlappingRanges(ranges: RedactionRange[]): RedactionRange[] {
   const selectedRanges: RedactionRange[] = [];
+  const rangesByPriority = [...ranges].sort((left, right) => {
+    const lengthDifference = getRangeLength(right) - getRangeLength(left);
 
-  for (const range of ranges.sort((left, right) => left.start - right.start)) {
-    const previousRange = selectedRanges.at(-1);
+    if (lengthDifference !== 0) {
+      return lengthDifference;
+    }
 
-    if (previousRange === undefined || range.start >= previousRange.end) {
+    return left.start - right.start;
+  });
+
+  for (const range of rangesByPriority) {
+    if (!selectedRanges.some((selectedRange) => rangesOverlap(range, selectedRange))) {
       selectedRanges.push(range);
     }
   }
 
-  return selectedRanges;
+  return selectedRanges.sort((left, right) => left.start - right.start);
+}
+
+function getRangeLength(range: RedactionRange): number {
+  return range.end - range.start;
+}
+
+function rangesOverlap(left: RedactionRange, right: RedactionRange): boolean {
+  return left.start < right.end && right.start < left.end;
 }

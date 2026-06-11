@@ -1,9 +1,9 @@
 import { parseKeywords } from "./keyword-parser.js";
 import { redactDocument } from "./redactor.js";
 
-const DEMO_KEYWORDS = 'Hello world "Boston Red Sox", "Pepperoni Pizza", beer, C++';
+const DEMO_KEYWORDS = 'Hello world "Boston Red Sox", "Pepperoni Pizza", pizza, "New York", York, beer, C++';
 const DEMO_DOCUMENT =
-  "Hello analyst. The Boston Red Sox report mentioned Pepperoni Pizza, beer, and C++.";
+  "Hello analyst. The Boston Red Sox report mentioned Pepperoni Pizza in New York, beer, and C++.";
 
 export function runPartOneDemo(): string {
   const keywords = parseKeywords(DEMO_KEYWORDS);

@@ -32,4 +32,14 @@ describe("redactDocument", () => {
       "XXXX and XXXX are listed.",
     );
   });
+
+  it("prefers the longest keyword when matches start at the same position", () => {
+    expect(redactDocument("I like pepperoni pizza.", ["pizza", "pepperoni pizza"])).toBe(
+      "I like XXXX.",
+    );
+  });
+
+  it("prefers the longest phrase when keyword matches overlap", () => {
+    expect(redactDocument("I live in New York.", ["New York", "York"])).toBe("I live in XXXX.");
+  });
 });
